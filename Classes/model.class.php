@@ -23,6 +23,14 @@ class Model {
     return $RES->fetchAll();
   }
   
+  // list entities of a table
+  public function ListEntitiesTable($table_name){
+    $SQL = "select * from " . $table_name;
+    $RES = $this->PDO->prepare($SQL);
+    $RES->execute();
+    return $RES->fetchAll();
+  }
+  
 }
 
 ?>

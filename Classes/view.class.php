@@ -17,7 +17,38 @@ class View {
       $menu .= "</div>";
       
       return $menu;
-    }    
+    }
+    
+    // data list of a table
+    public static function DataListTable($db_name, $array_data){
+      $list = "<table>";
+      $i = 0; // counter
+      
+      // get the heading of the table
+      foreach ($array_data[0] as $key => $value) {
+        if($i%2 == 0){
+          $list .= "<th>" . utf8_encode($key) . "</th>";
+        }        
+        $i++;
+      }
+      
+      // get the data of the table
+      foreach ($array_data as $k => $DATA) {
+        
+        $list .= "<tr>";
+        
+        for($i = 0; $i < COUNT($DATA)/2; $i++){
+          $list .= "<td>" . utf8_encode($DATA[$i]) . "</td>";
+        }
+        
+        $list .= "</tr>";
+      }
+      
+      $list .= "</div>";
+      
+      return $list;
+      
+    }   
     
     // html final rendering
     public static function HTML ($title, $contener) {
@@ -27,7 +58,7 @@ class View {
         <link rel='stylesheet' type='text/css' href='Fichiers/css/style.css' />
       </head>
       <body>
-        <img src='Fichiers/images/logo.jpg' /><br /><hr />
+        <img src='Fichiers/images/logo.jpg' height='80'/><br /><hr />
         </hr>".$contener."
       </body>
       </html>";
