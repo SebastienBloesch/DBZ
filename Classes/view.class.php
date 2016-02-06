@@ -20,15 +20,23 @@ class View {
     }
     
     // data list of a table
-    public static function DataListTable($db_name, $array_data){
+    public static function DataListTable($db_name, $table_name, $array_data){
       $list = "<table>";
-      $i = 0; // counter
+      $i = 0; $a = 0; // counter
+      $firstIdentifier = NULL;
+      $assocTab = [];
       
       // get the heading of the table
       foreach ($array_data[0] as $key => $value) {
+        // get the name of the first column
+        if($i === 0) $firstIdentifier = utf8_encode($key);
+        
         if($i%2 == 0){
           $list .= "<th>" . utf8_encode($key) . "</th>";
-        }        
+          $assocTab[$a] = $key;
+          $a++;
+        }
+               
         $i++;
       }
       
@@ -40,11 +48,24 @@ class View {
         for($i = 0; $i < COUNT($DATA)/2; $i++){
           $list .= "<td>" . utf8_encode($DATA[$i]) . "</td>";
         }
-        
+        $list .= "<td><a href='?T=" . $table_name . "&d_ID=" . $DATA[0] . "&table=" . $table_name . "&champ=" . $firstIdentifier . "'><button>Delete</button></a></td>";
         $list .= "</tr>";
       }
       
-      $list .= "</div>";
+      $list .= "<form method='POST' action=''>
+                  <tr>";
+                  
+      for($j = 0; $j < $i; $j++){
+        $list .= "<td><input type='text' name='" . $assocTab[$j] . "'></td>";
+      }
+      
+      $list .= "<input type='hidden' name='T' value='" . $table_name . "'>";
+      $list .= "<td><input type='submit' name='add' value='Add'></td>";
+                  
+      $list .= "  </tr>
+                </form>";
+      
+      $list .= "</table>";
       
       return $list;
       
