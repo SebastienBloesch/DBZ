@@ -49,12 +49,8 @@ class Model {
       $firstColumn = $key;
       break;
     }
-    $SQL = "select COUNT(*) FROM " . $table_name . " where " . $firstColumn . " = " . $tab_entities[$firstColumn];
-    $RES = $this->PDO->prepare($SQL);
-    $RES->execute();
-    $nb = $RES->fetchColumn();
     
-    if($nb == 0){
+    if($tab_entities[$firstColumn] == NULL){
       $SQL = "INSERT INTO " . $table_name . " (";
       
       foreach ($tab_entities as $key => $value) {
@@ -64,6 +60,7 @@ class Model {
         $i++;
       }
       
+      // reset iterator
       $i = 0;
       
       $SQL .= ") VALUES (";
@@ -79,6 +76,40 @@ class Model {
       
       $RES = $this->PDO->prepare($SQL);
       $RES->execute($tab_entities);
+    }
+    else {
+      $SQL = "select COUNT(*) FROM " . $table_name . " where " . $firstColumn . " = " . $tab_entities[$firstColumn];
+      $RES = $this->PDO->prepare($SQL);
+      $RES->execute();
+      $nb = $RES->fetchColumn();
+      
+      if($nb == 0){
+        $SQL = "INSERT INTO " . $table_name . " (";
+        
+        foreach ($tab_entities as $key => $value) {
+          $SQL .= $key;
+          if($i == $tabSize - 1) break;
+          else $SQL .= ",";
+          $i++;
+        }
+        
+        // reset iterator
+        $i = 0;
+        
+        $SQL .= ") VALUES (";
+        
+        foreach ($tab_entities as $key => $value) {
+          $SQL .= "'" . $value . "'";
+          if($i == $tabSize - 1) break;
+          else $SQL .= ",";
+          $i++;
+        }
+        
+        $SQL .= ")";
+        
+        $RES = $this->PDO->prepare($SQL);
+        $RES->execute($tab_entities);
+      }
     }
   }
   
