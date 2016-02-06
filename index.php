@@ -25,6 +25,12 @@ if(isset($_GET['d_ID'])){
   $MODEL->DeleteEntity($_GET['d_ID'], $_GET['table'], $_GET['champ']);
 }
 
+if(isset($_POST['form_db'])){
+  if($_POST['db_name'] != null){
+    $MODEL->ChangeDB($_POST['db_name']);
+  }
+}
+
 // add a new entity
 if(isset($_POST['add'])){
   
@@ -44,6 +50,9 @@ if(isset($_POST['add'])){
   
   $MODEL->AddEntity($finalTab, $_POST['T']);
 }
+
+// list of databases
+$OUTPUT .= View::ListDatabases($MODEL->GetDatabasesList());
 
 // set the menu based on tables
 $OUTPUT .= View::MenuTable ($MODEL->Name_DB(), $MODEL->List_Table());

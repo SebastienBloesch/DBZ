@@ -113,6 +113,37 @@ class Model {
     }
   }
   
+  // databases list
+  public function GetDatabasesList(){
+    $SQL = 'show databases';
+    $RES = $this->PDO->prepare($SQL);
+    $RES->execute();
+    
+    $result = $RES->fetchAll();
+    return $result;
+  }
+  
+  // change db name in ID-VARS-DB.ini
+  public function ChangeDB($newDB){
+    // Get ID-VARS-DB.ini
+    $ini_array = parse_ini_file("Config/ID-VARS-DB.ini");
+    // Change db name
+    $ini_array['DB_db'] = $newDB;
+    $result = null;
+    
+    foreach ($ini_array as $key => $value) {
+      $result .= $key . " = '" . $value . "'\r\n";
+    }
+    
+    // Open file    
+    if($fp = fopen("Config/ID-VARS-DB.ini", 'w')){
+      fwrite($fp, $result);
+      fclose($fp);
+      header('location: ./');
+    }
+    
+  }
+  
 }
 
 ?>

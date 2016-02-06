@@ -26,50 +26,67 @@ class View {
       $firstIdentifier = NULL;
       $assocTab = [];
       
-      // get the heading of the table
-      foreach ($array_data[0] as $key => $value) {
-        // get the name of the first column
-        if($i === 0) $firstIdentifier = utf8_encode($key);
-        
-        if($i%2 == 0){
-          $list .= "<th>" . utf8_encode($key) . "</th>";
-          $assocTab[$a] = $key;
-          $a++;
+      if(count($array_data) > 0){
+        // get the heading of the table
+        foreach ($array_data[0] as $key => $value) {
+          // get the name of the first column
+          if($i === 0) $firstIdentifier = utf8_encode($key);
+          
+          if($i%2 == 0){
+            $list .= "<th>" . utf8_encode($key) . "</th>";
+            $assocTab[$a] = $key;
+            $a++;
+          }
+                 
+          $i++;
         }
-               
-        $i++;
-      }
-      
-      // get the data of the table
-      foreach ($array_data as $k => $DATA) {
         
-        $list .= "<tr>";
-        
-        for($i = 0; $i < COUNT($DATA)/2; $i++){
-          $list .= "<td>" . utf8_encode($DATA[$i]) . "</td>";
+        // get the data of the table
+        foreach ($array_data as $k => $DATA) {
+          
+          $list .= "<tr>";
+          
+          for($i = 0; $i < COUNT($DATA)/2; $i++){
+            $list .= "<td>" . utf8_encode($DATA[$i]) . "</td>";
+          }
+          $list .= "<td><a href='?T=" . $table_name . "&d_ID=" . $DATA[0] . "&table=" . $table_name . "&champ=" . $firstIdentifier . "'><button>Delete</button></a></td>";
+          $list .= "</tr>";
         }
-        $list .= "<td><a href='?T=" . $table_name . "&d_ID=" . $DATA[0] . "&table=" . $table_name . "&champ=" . $firstIdentifier . "'><button>Delete</button></a></td>";
-        $list .= "</tr>";
+        
+        $list .= "<form method='POST' action=''>
+                    <tr>";
+                    
+        for($j = 0; $j < $i; $j++){
+          $list .= "<td><input type='text' name='" . $assocTab[$j] . "'></td>";
+        }
+        
+        $list .= "<input type='hidden' name='T' value='" . $table_name . "'>";
+        $list .= "<td><input type='submit' name='add' value='Add'></td>";
+                    
+        $list .= "  </tr>
+                  </form>";
+        
+        $list .= "</table>";
+        
+        return $list;
       }
       
-      $list .= "<form method='POST' action=''>
-                  <tr>";
-                  
-      for($j = 0; $j < $i; $j++){
-        $list .= "<td><input type='text' name='" . $assocTab[$j] . "'></td>";
+    }
+    
+    public static function ListDatabases($list_db){
+      $list = "<form method='POST' action=''>";
+      $list .= "<select name='db_name'>";
+      $list .= "<option></option>";
+      foreach ($list_db as $key => $value) {
+        $list .= "<option>" . $value[0] . "</option>";
       }
+      $list .= "</select>";
       
-      $list .= "<input type='hidden' name='T' value='" . $table_name . "'>";
-      $list .= "<td><input type='submit' name='add' value='Add'></td>";
-                  
-      $list .= "  </tr>
-                </form>";
-      
-      $list .= "</table>";
+      $list .= "<input type='submit' name='form_db' value='Change DB'>";
+      $list .= "<form><br><br>";
       
       return $list;
-      
-    }   
+    } 
     
     // html final rendering
     public static function HTML ($title, $contener) {
