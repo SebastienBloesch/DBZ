@@ -9,9 +9,9 @@ $CONFIG['MODULE_NAME'] = "DBZ Database Manager";
 $CONFIG['DB_INI_FILE'] = "Config/ID-VARS-DB.ini";
 
 
-
+// Déclaration de l'encodage
 ini_set('default_charset', 'UTF-8' );
-
+// Déclaration de la Timezone
 date_default_timezone_set('Europe/Paris');
 
 ?>
