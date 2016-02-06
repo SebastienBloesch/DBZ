@@ -45,7 +45,6 @@ class View {
         foreach ($array_data as $k => $DATA) {
           
           $list .= "<tr>";
-          
           for($i = 0; $i < COUNT($DATA)/2; $i++){
             $list .= "<td>" . utf8_encode($DATA[$i]) . "</td>";
           }
@@ -53,7 +52,7 @@ class View {
           $list .= "</tr>";
         }
         
-        $list .= "<form method='POST' action=''>
+        $list .= "<form method='GET' action='index.php'>
                     <tr>";
                     
         for($j = 0; $j < $i; $j++){
@@ -73,6 +72,7 @@ class View {
       
     }
     
+    // databases list
     public static function ListDatabases($list_db){
       $list = "<form method='POST' action=''>";
       $list .= "<select name='db_name'>";
@@ -83,7 +83,7 @@ class View {
       $list .= "</select>";
       
       $list .= "<input type='submit' name='form_db' value='Change DB'>";
-      $list .= "<form><br><br>";
+      $list .= "</form><br><br>";
       
       return $list;
     } 

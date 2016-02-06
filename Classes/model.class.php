@@ -50,9 +50,11 @@ class Model {
       break;
     }
     
+    // example, if first column is PK
     if($tab_entities[$firstColumn] == NULL){
       $SQL = "INSERT INTO " . $table_name . " (";
       
+      // construct sql query
       foreach ($tab_entities as $key => $value) {
         $SQL .= $key;
         if($i == $tabSize - 1) break;
@@ -74,10 +76,12 @@ class Model {
       
       $SQL .= ")";
       
+      // execute query
       $RES = $this->PDO->prepare($SQL);
       $RES->execute($tab_entities);
     }
     else {
+      // check if PK is not used
       $SQL = "select COUNT(*) FROM " . $table_name . " where " . $firstColumn . " = " . $tab_entities[$firstColumn];
       $RES = $this->PDO->prepare($SQL);
       $RES->execute();
@@ -113,8 +117,9 @@ class Model {
     }
   }
   
-  // databases list
+  // return databases list
   public function GetDatabasesList(){
+    // get all databases names
     $SQL = 'show databases';
     $RES = $this->PDO->prepare($SQL);
     $RES->execute();
@@ -135,13 +140,13 @@ class Model {
       $result .= $key . " = '" . $value . "'\r\n";
     }
     
-    // Open file    
+    // Open file and write
     if($fp = fopen("Config/ID-VARS-DB.ini", 'w')){
       fwrite($fp, $result);
       fclose($fp);
+      // reload page and pdo connection
       header('location: ./');
-    }
-    
+    }    
   }
   
 }

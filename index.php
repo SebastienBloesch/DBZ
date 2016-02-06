@@ -20,25 +20,25 @@ require_once("Classes/view.class.php");
 // html output increment
 $OUTPUT = NULL;
 
-// if a user want to delete an entity in a table
-if(isset($_GET['d_ID'])){
-  $MODEL->DeleteEntity($_GET['d_ID'], $_GET['table'], $_GET['champ']);
-}
-
 if(isset($_POST['form_db'])){
   if($_POST['db_name'] != null){
     $MODEL->ChangeDB($_POST['db_name']);
   }
 }
 
+// if a user want to delete an entity in a table
+if(isset($_GET['d_ID'])){
+  $MODEL->DeleteEntity($_GET['d_ID'], $_GET['table'], $_GET['champ']);
+}
+
 // add a new entity
-if(isset($_POST['add'])){
+if(isset($_GET['add'])){
   
   $i = 0;
-  $sizeOfTab = count($_POST) - 2;
+  $sizeOfTab = count($_GET) - 2;
   $finalTab = [];
   
-  foreach ($_POST as $key => $value) {
+  foreach ($_GET as $key => $value) {
     if($i === $sizeOfTab){
       break;
     }
@@ -48,7 +48,7 @@ if(isset($_POST['add'])){
     $i++;
   }
   
-  $MODEL->AddEntity($finalTab, $_POST['T']);
+  $MODEL->AddEntity($finalTab, $_GET['T']);
 }
 
 // list of databases
